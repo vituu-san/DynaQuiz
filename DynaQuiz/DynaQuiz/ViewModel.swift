@@ -7,22 +7,76 @@
 
 import Foundation
 
-final class ViewModel {
-    private let service = Service()
+protocol ViewModeling {
+    var question: Question { get }
+    var response: Answer { get }
 
-    init() {
-        test()
+    func register(user: User)
+    func scoreboard() -> [User]
+    func chose(option: String)
+    func next()
+}
+
+final class ViewModel: ViewModeling {
+    private let service: Servicing
+    private let databaseManager: DatabaseProtocol
+
+    @Published var question: Question = .placeholder
+    @Published var response: Answer = .placeholder
+
+    init(databaseManager: DatabaseProtocol = Database(), service: Servicing = Service()) {
+        self.databaseManager = databaseManager
+        self.service = service
+        fetchQuestion()
     }
 
-    func test() {
-        service.fetchQuestion { result in
+    // MARK: - ViewModeling
+    func register(user: User) {
+        do {
+            try databaseManager.create(user)
+        } catch let error {
+            print(error)
+        }
+    }
+
+    func scoreboard() -> [User] {
+        do {
+            let users = try databaseManager.all(of: User.self)
+            return Array(users)
+        } catch let error {
+            print(error)
+        }
+        return []
+    }
+
+    func chose(option: String) {
+        postAnswer(answer: option)
+    }
+
+    func next() {
+        fetchQuestion()
+    }
+
+    // MARK: - Service
+    private func fetchQuestion() {
+        service.fetchQuestion { [weak self] result in
             switch result {
             case .success(let question):
-                print(question)
+                self?.question = question
             case .failure(let error):
                 print(error)
             }
+        }
+    }
 
+    private func postAnswer(answer: String) {
+        service.postAnswer(id: question.id, answer: answer) { [weak self] result in
+            switch result {
+            case .success(let response):
+                self?.response = response
+            case .failure(let error):
+                print(error)
+            }
         }
     }
 }
