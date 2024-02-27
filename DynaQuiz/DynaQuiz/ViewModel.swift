@@ -78,7 +78,7 @@ final class ViewModel: ViewModeling {
     }
 
     private func postAnswer(answer: String) {
-        service.postAnswer(id: question.id, answer: answer) { [weak self] result in
+        service.postAnswer(id: question.questionId, answer: answer) { [weak self] result in
             switch result {
             case .success(let response):
                 self?.response = response
