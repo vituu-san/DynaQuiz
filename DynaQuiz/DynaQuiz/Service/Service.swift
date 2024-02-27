@@ -9,41 +9,26 @@ import Foundation
 
 protocol Servicing {
     func fetchQuestion(completionHandler: @escaping(Result<Question, APIError>) -> Void)
-    func postAnswer(id: Int, answer: String, completionHandler: @escaping(Result<Answer, APIError>) -> Void)
+    func postAnswer(id: String,
+                    answer: String,
+                    completionHandler: @escaping(Result<Answer, APIError>) -> Void)
 }
 
 final class Service: Servicing {
 
-    private let session: URLSession
+    private let session: URLSessionProtocol
 
-    init(session: URLSession = URLSession.shared) {
+    init(session: URLSessionProtocol = URLSession.shared) {
         self.session = session
     }
 
     func fetchQuestion(completionHandler: @escaping(Result<Question, APIError>) -> Void) {
         let url = DynamoxAPI.getQuestion.url
 
-        session.dataTask(with: url) { data, _, error in
-            if let error = error {
-                completionHandler(.failure(.custom(error)))
-                return
-            }
-
-            guard let data = data else {
-                completionHandler(.failure(.wrongData))
-                return
-            }
-
-            do {
-                let question = try JSONDecoder().decode(Question.self, from: data)
-                completionHandler(.success(question))
-            } catch let error {
-                completionHandler(.failure(.custom(error)))
-            }
-        }.resume()
+        makeRequest(url: url, completionHandler: completionHandler)
     }
 
-    func postAnswer(id: Int,
+    func postAnswer(id: String,
                     answer: String,
                     completionHandler: @escaping(Result<Answer, APIError>) -> Void) {
         let url = DynamoxAPI.postAnswer(id: id).url
@@ -59,22 +44,27 @@ final class Service: Servicing {
 
         request.httpBody = body
 
+        makeRequest(url: url, completionHandler: completionHandler)
+    }
+
+    private func makeRequest<T: Codable>(url: URL,
+                                         completionHandler: @escaping(Result<T, APIError>) -> Void) {
         session.dataTask(with: url) { data, _, error in
             if let error = error {
-                completionHandler(.failure(.custom(error)))
+                completionHandler(.failure(.custom(NSError(domain: error.localizedDescription, code: 0))))
                 return
             }
 
             guard let data = data else {
-                completionHandler(.failure(.wrongData))
+                completionHandler(.failure(.noData))
                 return
             }
 
             do {
-                let answer = try JSONDecoder().decode(Answer.self, from: data)
+                let answer = try JSONDecoder().decode(T.self, from: data)
                 completionHandler(.success(answer))
-            } catch let error {
-                completionHandler(.failure(.custom(error)))
+            } catch {
+                completionHandler(.failure(.wrongData))
             }
         }.resume()
     }

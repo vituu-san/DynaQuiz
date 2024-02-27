@@ -13,7 +13,6 @@ extension RawRepresentable where RawValue == String, Self: API {
     init?(rawValue: Self.RawValue) { nil }
 }
 
-
 public protocol RawRepresentable {
 
     associatedtype RawValue

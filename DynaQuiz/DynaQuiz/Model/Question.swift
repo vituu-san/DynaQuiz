@@ -8,7 +8,11 @@
 import Foundation
 
 struct Question: Codable, Equatable {
-    var id: Int
+    var id: String
     var statement: String
     var options: [String]
+
+    static var placeholder: Question {
+        Question(id: "", statement: "", options: [])
+    }
 }

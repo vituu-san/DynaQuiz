@@ -23,5 +23,5 @@ enum DynamoxAPI: RawRepresentable, API {
     }
 
     case getQuestion
-    case postAnswer(id: Int)
+    case postAnswer(id: String)
 }

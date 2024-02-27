@@ -10,5 +10,6 @@ import Foundation
 enum APIError: Error {
     case server
     case wrongData
-    case custom(Error)
+    case noData
+    case custom(NSError)
 }

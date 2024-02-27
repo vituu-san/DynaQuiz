@@ -9,4 +9,8 @@ import Foundation
 
 struct Answer: Codable, Equatable {
     var result: Bool
+
+    static var placeholder: Answer {
+        Answer(result: false)
+    }
 }
