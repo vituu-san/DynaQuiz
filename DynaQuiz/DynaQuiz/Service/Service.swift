@@ -18,7 +18,7 @@ final class Service: Servicing {
 
     private let session: URLSessionProtocol
 
-    init(session: URLSessionProtocol = URLSession.shared) {
+    init(session: URLSessionProtocol) {
         self.session = session
     }
 

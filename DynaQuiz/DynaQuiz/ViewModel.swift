@@ -24,10 +24,17 @@ final class ViewModel: ViewModeling {
     @Published var question: Question = .placeholder
     @Published var response: Answer = .placeholder
 
-    init(databaseManager: DatabaseProtocol = Database(), service: Servicing = Service()) {
+    init(databaseManager: DatabaseProtocol, service: Servicing) {
         self.databaseManager = databaseManager
         self.service = service
         fetchQuestion()
+        initializeDatabase()
+    }
+
+    func initializeDatabase() {
+        if scoreboard().isEmpty {
+            register(user: .placeholder)
+        }
     }
 
     // MARK: - ViewModeling
@@ -42,6 +49,7 @@ final class ViewModel: ViewModeling {
     func scoreboard() -> [User] {
         do {
             let users = try databaseManager.all(of: User.self)
+            
             return Array(users)
         } catch let error {
             print(error)
@@ -78,5 +86,16 @@ final class ViewModel: ViewModeling {
                 print(error)
             }
         }
+    }
+}
+
+// Solução temporária para injeção de dependência na `ContentView`
+import RealmSwift
+
+extension ViewModel {
+    static var shared: ViewModel {
+        let service = Service(session: URLSession.shared)
+        let realm = try! Realm()
+        return ViewModel(databaseManager: Database(realm: realm), service: service)
     }
 }
