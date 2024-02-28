@@ -12,7 +12,10 @@ final class Coordinator: ObservableObject {
     @Published var path = NavigationPath()
 
     enum Page: Hashable {
+        case login
+        case home
         case content
+        case scoreboard
     }
 
     func push(page: Page) {
@@ -22,11 +25,17 @@ final class Coordinator: ObservableObject {
     @ViewBuilder
     func build(page: Page) -> some View {
         switch page {
+        case .login:
+            LoginView()
+        case .home:
+            HomeView()
         case .content:
             let service = Service(session: URLSession.shared)
             let realm = try! Realm()
             let viewModel = ViewModel(databaseManager: Database(realm: realm), service: service)
             QuestionView(viewModel: viewModel)
+        case .scoreboard:
+            ScoreboardView()
         }
     }
 }

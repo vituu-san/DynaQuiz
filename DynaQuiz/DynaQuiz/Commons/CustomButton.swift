@@ -7,29 +7,53 @@
 
 import SwiftUI
 
-struct CustomButton: View {
+struct NormalButton: View {
     var title: String
-    var color: Color
-    var textColor: Color
-    var width: Double
-    var height: Double
-
+    @State var disabled: Bool = false
     var onTapGesture: () -> Void
 
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 10)
-                .fill(color)
-                .stroke(.gray.opacity(0.8), lineWidth: 2)
-                .padding(.vertical, 4)
-                .frame(width: width, height: height)
+            RoundedRectangle(cornerRadius: Sizing.cornerRadius)
+                .fill(
+                    disabled ? Colors.Button.Normal.disabled : Colors.Button.Normal.background
+                )
+                .padding(.vertical, Spacing.n1)
+                .frame(height: Sizing.Button.height)
+                .onTapGesture {
+                    if !disabled {
+                        onTapGesture()
+                    }
+                }
+
+            Text(title)
+                .font(.system(size: Sizing.Font.n1))
+                .foregroundStyle(Colors.Text.light)
+                .bold()
+        }
+    }
+}
+
+
+struct OptionButton: View {
+    var title: String
+    var onTapGesture: () -> Void
+
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: Sizing.cornerRadius)
+                .fill(Colors.Button.Option.background)
+                .stroke(Colors.border, lineWidth: 1)
+                .padding(.vertical, Spacing.n1)
+                .frame(height: Sizing.Button.height)
                 .onTapGesture {
                     onTapGesture()
                 }
 
             Text(title)
-                .font(.system(size: 22))
-                .foregroundStyle(textColor)
+                .font(.system(size: Sizing.Font.n1))
+                .foregroundStyle(Colors.Text.light)
+                .bold()
         }
     }
 }

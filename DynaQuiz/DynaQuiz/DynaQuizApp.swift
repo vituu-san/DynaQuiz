@@ -11,7 +11,7 @@ import SwiftUI
 struct DynaQuizApp: App {
     var body: some Scene {
         WindowGroup {
-            QuestionView(viewModel: ViewModel.shared)
+            CoordinatorView()
         }
     }
 }
