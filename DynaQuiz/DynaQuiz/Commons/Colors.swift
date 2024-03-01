@@ -26,6 +26,8 @@ struct Colors {
         struct Option {
             static let background: Color = Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1))
             static let selected: Color = Color(#colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1))
+            static let wrong: Color = Color(#colorLiteral(red: 0.863048017, green: 0, blue: 0, alpha: 1))
+            static let correct: Color = Color(#colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1))
         }
     }
 

@@ -19,9 +19,9 @@ struct Question: Codable, Equatable {
     }
 
     static var placeholder: Question {
-        Question(questionId: "1", 
-                 statement: "Qual é o nome da empresa mais legal do mundo?",
-                 options: ["Google", "Microsoft", "Dynamox", "Spotify", "Amazon"])
+        Question(questionId: "", 
+                 statement: "",
+                 options: [])
     }
 }
 

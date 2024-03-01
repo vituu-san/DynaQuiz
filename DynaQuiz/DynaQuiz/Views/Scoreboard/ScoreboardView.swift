@@ -9,30 +9,23 @@ import SwiftUI
 
 struct ScoreboardView: View {
     @Environment(\.dismiss) private var dismiss
-    
-    @State private var items = Question.placeholder.options
-    @State private var selectedRow: String?
+    @EnvironmentObject var viewModel: ScoreboardViewModel
 
     var body: some View {
         List {
-            ForEach(Array(items.enumerated()), id: \.offset) { index, user in
-                ScoreboardCell(position: "\(index + 1)", name: user)
+            ForEach(Array($viewModel.users.enumerated()), id: \.offset) { index, user in
+                ScoreboardCell(position: "\(index + 1)", name: user.wrappedValue.name, points: user.score.wrappedValue)
                     .listRowSeparator(.hidden)
-                    .listRowInsets(.init(top: Spacing.n2,
-                                         leading: Spacing.n2,
-                                         bottom: Spacing.n2,
-                                         trailing: Spacing.n2))
             }
         }
-        .padding(.horizontal, -Spacing.n3)
-        .padding(.top, -Spacing.n5)
+        .padding(.horizontal, -Spacing.n4)
+        .padding(.top, -Spacing.n2)
         .scrollContentBackground(.hidden)
         .scrollBounceBehavior(.basedOnSize)
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: NavigationBackButton(dismiss: dismiss))
+        .onAppear {
+            viewModel.onAppear()
+        }
     }
-}
-
-#Preview {
-    ScoreboardView()
 }

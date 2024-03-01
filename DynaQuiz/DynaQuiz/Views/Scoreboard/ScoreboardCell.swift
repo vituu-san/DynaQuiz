@@ -10,6 +10,7 @@ import SwiftUI
 struct ScoreboardCell: View {
     var position: String
     var name: String
+    var points: Int
 
     var body: some View {
         ZStack {
@@ -30,6 +31,9 @@ struct ScoreboardCell: View {
                 Text(name)
 
                 Spacer()
+
+                Text("\(points)/10")
+                    .padding(.trailing, Spacing.n5)
             }
             .frame(height: Sizing.Text.height)
             .frame(maxWidth: .infinity)
@@ -38,8 +42,4 @@ struct ScoreboardCell: View {
             .bold()
         }
     }
-}
-
-#Preview {
-    ScoreboardCell(position: "1", name: "John")
 }

@@ -47,4 +47,22 @@ final class DatabaseTests: XCTestCase {
 
         XCTAssertEqual(users.count, 2)
     }
+
+    func testUpdate_ShouldUpdateSomeProperty() {
+        let john = User(name: "John", score: 7)
+        let sara = User(name: "Sara", score: 9)
+
+        try! testRealm.write {
+            testRealm.add(john)
+            testRealm.add(sara)
+        }
+
+        try! sut.update(of: john, key: "score", value: 4)
+
+        let all = try! sut.all(of: User.self)
+
+        let updatedJohn = all.first(where: { $0.name == john.name })
+
+        XCTAssertEqual(updatedJohn?.score, 4)
+    }
 }

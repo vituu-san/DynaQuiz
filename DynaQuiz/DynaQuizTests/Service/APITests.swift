@@ -15,7 +15,7 @@ final class APITests: XCTestCase {
     }
 
     func testPaths_WhenAnswer() {
-        XCTAssertEqual(DynamoxAPI.postAnswer(id: "10").url.absoluteString.capitalized,
+        XCTAssertEqual(DynamoxAPI.postAnswer(id: "10").url.absoluteString,
                        "https://quiz-api-bwi5hjqyaq-uc.a.run.app/answer?questionId=10")
     }
 }

@@ -8,7 +8,7 @@
 import Foundation
 
 extension RawRepresentable where RawValue == String, Self: API {
-    var url: URL { Self.baseURL.appendingPathComponent(rawValue) }
+    var url: URL { URL(string: "\(Self.baseURL)\(rawValue)")! }
 
     init?(rawValue: Self.RawValue) { nil }
 }

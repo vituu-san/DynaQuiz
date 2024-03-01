@@ -6,8 +6,11 @@
 //
 
 import SwiftUI
+import RealmSwift
 
 struct LoginView: View {
+    @EnvironmentObject var viewModel: LoginViewModel
+
     var body: some View {
         ZStack {
             VStack {
@@ -19,9 +22,8 @@ struct LoginView: View {
                height: UIScreen.main.bounds.height)
         .ignoresSafeArea(.all)
         .background(Colors.Background.colored)
+        .onAppear {
+            viewModel.onAppear()
+        }
     }
-}
-
-#Preview {
-    LoginView()
 }

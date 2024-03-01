@@ -9,7 +9,7 @@ import Foundation
 
 enum Sizing {
     enum Button {
-        static let height: CGFloat = 70
+        static let height: CGFloat = 60
     }
 
     enum Table {
@@ -25,7 +25,8 @@ enum Sizing {
         static let n1: CGFloat = 22
         static let n2: CGFloat = 24
         static let n3: CGFloat = 32
+        static let n4: CGFloat = 40
     }
 
-    static let cornerRadius: CGFloat = 15
+    static let cornerRadius: CGFloat = 10
 }

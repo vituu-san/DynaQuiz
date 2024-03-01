@@ -8,8 +8,11 @@
 import Foundation
 import RealmSwift
 
-public final class User: Object, ObjectKeyIdentifiable, Codable {
+public class ObjectData: Object, ObjectKeyIdentifiable {
     @Persisted(primaryKey: true) var _id: ObjectId
+}
+
+public final class User: ObjectData, Codable {
     @Persisted var name: String = ""
     @Persisted var score: Int = 0
 

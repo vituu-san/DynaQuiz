@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct HomeCard: View {
-    @State private var username: String = ""
+    var user: User
+
     @EnvironmentObject private var coordinator: Coordinator
 
     var body: some View {
@@ -19,18 +20,14 @@ struct HomeCard: View {
                     .frame(width: 150, height: 150)
                     .padding(.bottom, 30)
 
-                VStack(spacing: Spacing.n1) {
-                    NormalButton(title: "Placar") {
+                VStack {
+                    CustomButton(text: "Placar") {
                         coordinator.push(page: .scoreboard)
-                        print("Olá, \(username)")
                     }
-                    .bold()
 
-                    NormalButton(title: "Iniciar") {
-                        coordinator.push(page: .content)
-                        print("Olá, \(username)")
+                    CustomButton(text: "Iniciar") {
+                        coordinator.push(page: .content(user: user))
                     }
-                    .bold()
                 }
             }
             .padding([.top, .horizontal], Spacing.n3)
@@ -42,5 +39,5 @@ struct HomeCard: View {
 }
 
 #Preview {
-    HomeCard()
+    HomeCard(user: .placeholder)
 }

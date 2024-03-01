@@ -8,41 +8,32 @@
 import SwiftUI
 
 struct OptionTable: View {
-    var tappedOnCell: ((_ option: String) -> Void)?
-
-    @State private var items = Question.placeholder.options
-    @State private var selectedRow: String?
+    @EnvironmentObject var viewModel: QuestionViewModel
 
     var body: some View {
         List {
-            ForEach(items, id: \.self) { option in
-                Text(option)
-                    .frame(height: Sizing.Text.height)
-                    .frame(maxWidth: .infinity)
-                    .font(.system(size: Sizing.Font.n2))
-                    .foregroundStyle(
-                        option == selectedRow ? Colors.Text.light : Colors.Text.dark
-                    )
-                    .bold()
+            ForEach(viewModel.question.options, id: \.self) { option in
+                OptionCell(title: option)
                     .listRowSeparator(.hidden)
                     .listRowBackground(
                         RoundedRectangle(cornerRadius: Sizing.cornerRadius)
                             .fill(
-                                option == selectedRow ? Colors.Button.Option.selected : Colors.Button.Option.background)
+                                viewModel.selectedOption == option ? viewModel.cellColor : Colors.Button.Option.background
+                            )
                             .stroke(Colors.border, lineWidth: 1)
                             .padding(.vertical, Spacing.n1)
                     )
                     .onTapGesture {
-                        self.selectedRow = option
-                        tappedOnCell?(option)
+                        viewModel.chose(option: option)
                     }
+                    .disabled(viewModel.answered)
             }
         }
+        .padding(.horizontal, -Spacing.n2)
         .scrollContentBackground(.hidden)
         .scrollBounceBehavior(.basedOnSize)
+        .onAppear {
+           UICollectionView.appearance().contentInset.top = -30
+        }
     }
-}
-
-#Preview {
-    OptionTable()
 }

@@ -8,11 +8,13 @@
 import SwiftUI
 
 struct HomeView: View {
+    var user: User
+
     var body: some View {
         ZStack {
             VStack {
                 Spacer()
-                HomeCard()
+                HomeCard(user: user)
             }
         }
         .navigationBarBackButtonHidden(true)
@@ -21,8 +23,4 @@ struct HomeView: View {
         .ignoresSafeArea(.all)
         .background(Colors.Background.colored)
     }
-}
-
-#Preview {
-    HomeView()
 }

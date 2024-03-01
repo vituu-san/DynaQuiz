@@ -8,31 +8,27 @@
 import SwiftUI
 
 struct HeaderView: View {
-    @State var counter: Double = 1
-    var total: Double = 10
+    @EnvironmentObject var viewModel: QuestionViewModel
 
     var body: some View {
         VStack(spacing: Spacing.n3) {
-            Text(Question.placeholder.statement)
-                .font(.system(size: Sizing.Font.n3))
+            Text(viewModel.question.statement)
+                .font(.system(size: Sizing.Font.n2))
+                .bold()
                 .padding(.horizontal)
                 .multilineTextAlignment(.center)
 
             HStack {
-                Text("\(Int(counter))/\(Int(total))")
+                Text("\(Int(viewModel.counter))/\(Int(10))")
                     .font(.system(size: Sizing.Font.n1))
 
                 Spacer()
             }
             .padding(.horizontal, Spacing.n4)
 
-            ProgressView("", value: counter, total: total)
+            ProgressView("", value: Double(viewModel.counter), total: 10)
                 .padding(.top, -Spacing.n4)
                 .tint(Colors.line)
         }
     }
-}
-
-#Preview {
-    HeaderView()
 }
