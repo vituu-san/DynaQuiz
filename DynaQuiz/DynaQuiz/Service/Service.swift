@@ -56,7 +56,7 @@ final class Service: Servicing {
                 completionHandler(.failure(.custom(NSError(domain: error.localizedDescription, code: 0))))
                 return
             }
-            
+
             guard let data = data else {
                 completionHandler(.failure(.noData))
                 return

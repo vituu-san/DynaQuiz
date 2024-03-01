@@ -57,7 +57,7 @@ final class DatabaseTests: XCTestCase {
             testRealm.add(sara)
         }
 
-        try! sut.update(of: john, key: "score", value: 4)
+        try! sut.update(of: john, type: User.self, key: "score", value: 4)
 
         let all = try! sut.all(of: User.self)
 
